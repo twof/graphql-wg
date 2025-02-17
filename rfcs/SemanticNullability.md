@@ -207,26 +207,14 @@ Guiding Principles. The scores are:
 - 🥈 Silver - A nice-to-have
 - 🥉 Bronze - Not necessary
 
-## 🎯 A. GraphQL should be able to indicate which nullable fields should become non-nullable when error propagation is disabled
+## 🎯 A. GraphQL should be able to indicate which positions will only be null if an error occurred
 
 The promise of this RFC - the reflection of the semantic nullability of the
-fields without compromising requests with error propagation enabled via the
-differentiation of a "null if and only if an error occurs" type.
+fields.
 
-With error propagation enabled (the traditional GraphQL behavior), it's
-recommended that fields are marked nullable if errors may happen there, even if
-the underlying value is semantically non-nullable. If we allow error-handling
-clients to disable error propagation, then these traditionally nullable
-positions can be marked (semantically) non-nullable in that mode, since with
-error propagation disabled the selection sets are no longer destroyed.
-
-Note: Traditional non-nullable types will effectively become semantically
-non-nullable when error propagation is disabled no matter which solution is
-chosen, so this criteria is only concerned with traditionally nullable types.
-
-| [1][solution-1] | [2][solution-2] | [3][solution-3] | [4][solution-4] | [5][solution-5] |
-|-----------------|-----------------|-----------------|-----------------|-----------------|
-| ✅               | ✅               | ✅               | ✅               | 🚫👍              |
+| [1][solution-1] | [2][solution-2] | [3][solution-3] | [4][solution-4] |
+| --------------- | --------------- | --------------- | --------------- |
+| ✅              | ✅              | ✅              | ✅              |
 
 Criteria score: 🥇
 
@@ -236,9 +224,9 @@ Users should be able to adopt semantic nullability into an existing schema, and
 when doing so all existing operations should remain valid, and should have the
 same meaning as they always did.
 
-| [1][solution-1] | [2][solution-2] | [3][solution-3] | [4][solution-4] | [5][solution-5] |
-|-----------------|-----------------|-----------------|-----------------|-----------------|
-| ✅               | 🚫              | ✅               | ✅               | ✅               |
+| [1][solution-1] | [2][solution-2] | [3][solution-3] | [4][solution-4] |
+| --------------- | --------------- | --------------- | --------------- |
+| ✅              | 🚫              | ✅              | ✅              |
 
 Criteria score: 🥇
 
@@ -248,63 +236,56 @@ GraphQL has been public for 10 years and there's a lot of content out there
 noting that GraphQL types are nullable by default (unadorned type is nullable)
 and that `!` means non-nullable. Our changes should not invalidate this content.
 
-| [1][solution-1] | [2][solution-2] | [3][solution-3] | [4][solution-4] | [5][solution-5] |
-|-----------------|-----------------|-----------------|-----------------|-----------------|
-| ✅               | 🚫              | ✅               | 🚫              | ✅               |
+| [1][solution-1] | [2][solution-2] | [3][solution-3] | [4][solution-4] |
+| --------------- | --------------- | --------------- | --------------- |
+| ✅              | 🚫              | 🚫              | 🚫              |
 
 Criteria score: 🥈
 
-## 🎯 D. Syntax should be obvious to programmers
+## 🎯 D. Syntax should be familiar to programmers
 
-The GraphQL languages similarity to JSON is one of its strengths, making it
-immediately feel familiar. Syntax used should feel obvious to developers new to
-GraphQL.
+The GraphQL languages similarity to popular modern programming languages
+is one of its strengths, making it immediately feel familiar. Syntax used
+should feel obvious to developers new to GraphQL.
 
-| [1][solution-1] | [2][solution-2] | [3][solution-3] | [4][solution-4] | [5][solution-5] |
-|-----------------|-----------------|-----------------|-----------------|-----------------|
-| 🚫              | ✅               | ✅               | ✅              | ⚠️               |
+| [1][solution-1] | [2][solution-2] | [3][solution-3] | [4][solution-4] |
+| --------------- | --------------- | --------------- | --------------- |
+| 🚫              | ✅              | ✅              | ✅              |
 
 Criteria score: 🥈
 
-## 🎯 E. Syntax used in SDL and in executable documents should be consistent with SDL
+## 🎯 E. Input and output types should use consistent syntax
 
 When a user wishes to replace the value for an input field or argument with a
 variable in their GraphQL operation, the type syntax should be either identical
 or similar, and should carry the same meaning.
 
-| [1][solution-1] | [2][solution-2] | [3][solution-3] | [4][solution-4] | [5][solution-5] |
-|-----------------|-----------------|-----------------|-----------------|-----------------|
-| ✅               | ✅               | ✅               | 🚫              | ✅               |
+| [1][solution-1] | [2][solution-2] | [3][solution-3] | [4][solution-4] |
+| --------------- | --------------- | --------------- | --------------- |
+| ✅              | 🚫              | ✅              | 🚫              |
 
-Criteria score: 🥇
+Criteria score: 🥈
 
 ## 🎯 F. Alternative syntaxes should not cause confusion
 
 Where a proposal allows alternative syntaxes to be used, the two syntaxes should
 not cause confusion.
 
-| [1][solution-1] | [2][solution-2] | [3][solution-3] | [4][solution-4] | [5][solution-5] |
-|-----------------|-----------------|-----------------|-----------------|-----------------|
-| ✅               | ✅               | ✅               | 🚫              | ✅               |
+| [1][solution-1] | [2][solution-2] | [3][solution-3] | [4][solution-4] |
+| --------------- | --------------- | --------------- | --------------- |
+| ✅              | 🚫              | 🚫              | 🚫              |
 
 Criteria score: 🥇
 
-## 🎯 G. Error propagation boundaries should not change in existing executable documents
+## 🎯 G. Implementation and spec simplicity
 
-An expansion of B, this states that the proposal will not change where errors
-propagate to when error propagation is enabled (i.e. existing documents will
-still keep errors local to the same positions that they did when they were
-published), allowing for the "partial success" feature of GraphQL to continue to
-shine and not compromising the resiliency of legacy deployed app versions.
+The implementation required to make the proposal work should be simple.
 
-| [1][solution-1] | [2][solution-2] | [3][solution-3] | [4][solution-4] | [5][solution-5] |
-| --------------- | --------------- | --------------- | --------------- |-----------------|
-| ✅              | ✅              | ✅              | ✅              | 🚫              |
+| [1][solution-1] | [2][solution-2] | [3][solution-3] | [4][solution-4] |
+| --------------- | --------------- | --------------- | --------------- |
+| ✅              | 🚫              | 🚫              | 🚫              |
 
-Criteria score: 🥇
-
-* ✂️ Objection: proposal to lower the score to 🥈. With enough advance notice and a clear upgrade 
-path for legacy apps, the tradeoff might be acceptable. 
+Criteria score: 🥉
 
 <!--
 
@@ -314,9 +295,9 @@ Template for new items:
 
 DESCRIPTION
 
-| [1][solution-1] | [2][solution-2] | [3][solution-3] | [4][solution-4] | [5][solution-5] |
-| --------------- | --------------- | --------------- | --------------- |-----------------|
-| ?               | ?               | ?               | ?               | ?               |
+| [1][solution-1] | [2][solution-2] | [3][solution-3] | [4][solution-4] |
+| --------------- | --------------- | --------------- | --------------- |
+| ❔              | ❔              | ❔              | ❔              |
 
 Criteria score: ❔
 
@@ -387,7 +368,7 @@ have been discussed the choice of symbol comes down mostly to aesthetics.
 - [F][criteria-f]
   - ✅ Same syntax.
 - [G][criteria-g]
-  - ✅ Error capture positions unchanged when error propagation enabled
+  - ✅ Simple implemenation.
 
 ## 💡 2. "Strict Semantic Nullability"
 
@@ -426,7 +407,7 @@ symbol) to indicate that a position may semantically be null.
 - [F][criteria-f]
   - ✅ There is no alternative syntax.
 - [G][criteria-g]
-  - ✅ Error capture positions unchanged when error propagation enabled
+  - 🚫 Simple implemenation.
 
 ## 💡 3. New "Semantic Non-Null" type, usurping `!` syntax
 
@@ -488,7 +469,7 @@ day-to-day work.
     means non-null, just with the additional "kills parent on exception"
     behavior.
 - [G][criteria-g]
-  - ✅ Error capture positions unchanged when error propagation enabled
+  - 🚫 Simple implemenation.
 
 ## 💡 4. New "Semantic Non-Null" type, with `?` used for nullable types
 
@@ -525,29 +506,4 @@ directive is present, and a `?` symbol is used to indicate a nullable position.
   - 🚫 `Int` being nullable in one mode and non-nullable in the other mode is
     unexpected and will likely lead to confusion.
 - [G][criteria-g]
-  - ✅ Error capture positions unchanged when error propagation enabled
-
-## 💡 5. Use non-null in semantically non-nullable places and encourage disabling error propagation
-
-**Champion**: @martinbonnin
-
-- Discussion: https://github.com/graphql/nullability-wg/discussions/85
-
-This proposal relies on the ability of clients to opt out of error propagation; instead of introducing a new type it instructs schema authors to optimize for error-handling clients and use the traditional non-null type (`!`) on all semantically non-null fields.
-
-### ⚖️ Evaluation
-
-- [A][criteria-a]
-  - 🚫👍 The nullability used in both error-propagation and no-error-propagation modes are the same. This is a feature, not a bug!
-- [B][criteria-b]
-  - ✅ The change from nullable to non-nullable on output is backwards compatible from a type perspective; for impact on error boundaries see G.
-- [C][criteria-c]
-  - ✅ `Int` means nullable, and `Int!` means non-nullable, still.
-- [D][criteria-d]
-  - ⚠️ Adding `@onError` to operations is not immediately intuitive but most error-handling clients should add it automatically, making it transparent to end users. 
-- [E][criteria-e]
-  - ✅ Same syntax.
-- [F][criteria-f]
-  - ✅ Same syntax.
-- [G][criteria-g]
-  - 🚫 Using non-null in more positions will change the error boundary positions when error propagation is enabled.
+  - 🚫 Simple implemenation.
